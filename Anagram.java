@@ -28,8 +28,20 @@ public class Anagram {
 
 	// Returns true if the two given strings are anagrams, false otherwise.
 	public static boolean isAnagram(String str1, String str2) {
-		// Replace the following statement with your code
-		return false;
+		if(str1.isEmpty() && str1.isEmpty()){
+			return true;
+		}
+		if(str1.length()!=str1.length()){
+			return false;
+		}
+		String str11 = str1.toLowerCase();
+		String str22 = str2.toLowerCase();
+		for (int i=0; i<str11.length(); i++){
+        if (str22.indexOf(str11.charAt(i)) == -1) {
+				return false;
+		}
+		}
+		return true;
 	}
 	   
 	// Returns a preprocessed version of the given string: all the letter characters are converted

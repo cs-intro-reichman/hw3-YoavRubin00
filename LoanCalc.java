@@ -28,8 +28,12 @@ public class LoanCalc {
 	// Computes the ending balance of a loan, given the loan amount, the periodical
 	// interest rate (as a percentage), the number of periods (n), and the periodical payment.
 	private static double endBalance(double loan, double rate, int n, double payment) {	
-		// Replace the following statement with your code
-		return 0;
+		// מחשבת את התשלום שנשאר לאחר N תשלומים 
+		double ret = loan;
+		for(int i = 0; i<n; i++){
+			ret = (ret-payment)*(1 + rate / 100);
+		}
+		return ret;
 	}
 	
 	// Uses sequential search to compute an approximation of the periodical payment
@@ -38,8 +42,14 @@ public class LoanCalc {
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
-		// Replace the following statement with your code
-		return 0;
+		double payment = loan/n;
+		iterationCounter = 0;
+		int ret;
+		while(endBalance(loan,rate,n,payment) > 0){
+			payment = payment+epsilon;
+			iterationCounter++;
+		}
+		return payment;
     }
     
     // Uses bisection search to compute an approximation of the periodical payment 
@@ -48,7 +58,27 @@ public class LoanCalc {
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {  
-        // Replace the following statement with your code
-		return 0;
+        // L: תשלום מינימלי (היתרה הסופית תהיה חיובית - חייבים לשלם יותר)
+        double L = loan / n; 
+        // בחירת H גבוה מספיק כדי להבטיח endBalance(H) < 0.
+        double H = loan; 
+        // אם ה-rate גבוה, נבחר גבול עליון גבוה יותר, נניח loan * 2, כדי להיות בטוחים
+        if (endBalance(loan, rate, n, H) > 0) {
+             H = H * 2; 
+        }
+        iterationCounter = 0;
+        while ((H - L) > epsilon) {         
+            // חישוב נקודת האמצע (התשלום הפוטנציאלי החדש)
+            double g = (L + H) / 2;    
+            double end_g = endBalance(loan, rate, n, g);
+            iterationCounter++;
+            if (end_g > 0) {
+                L = g;
+            } 
+            else {
+                H = g;
+            }
+        }
+        return H;
     }
-}
+    }
