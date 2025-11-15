@@ -22,7 +22,19 @@ public class Algebra {
 		System.out.println(sqrt(263169));
    		System.out.println(sqrt(76123));
 	}  
-	// Returns x1 + x2// Returns x1 + x2 (Corrected for negative x2)
+public static int negate(int x) {
+    int ret = 0;
+    if (x > 0) {
+        for (int i = 0; i < x; i++) {
+            ret--;
+        }
+    } else if (x < 0) {
+        for (int i = 0; i > x; i--) { 
+            ret++;
+        }
+    }
+    return ret;
+}
 public static int plus(int x1, int x2) {
     int ret = x1;
     if (x2 >= 0) {
@@ -30,23 +42,22 @@ public static int plus(int x1, int x2) {
             ret++;
         }
     } else {
-        int absX2 = minus(0, x2);
+        int absX2 = negate(x2); 
         for (int i = 0; i < absX2; i++) {
             ret--;
         }
     }
     return ret;
 }
-
 public static int minus(int x1, int x2) {
-    return plus(x1, minus(0, x2));
+    return plus(x1, negate(x2));
 }
 
 public static int times(int x1, int x2) {
     if (x1 == 0 || x2 == 0) return 0;
     boolean isNegative = (x1 < 0) != (x2 < 0);
-    int absX1 = x1 < 0 ? minus(0, x1) : x1;
-    int absX2 = x2 < 0 ? minus(0, x2) : x2;
+    int absX1 = x1 < 0 ? negate(x1) : x1;
+    int absX2 = x2 < 0 ? negate(x2) : x2;
     int ret = 0;
     for (int i = 0; i < absX2; i++) {
         ret = plus(ret, absX1);
@@ -66,13 +77,16 @@ public static int pow(int x, int n) {
 
 public static int div(int x1, int x2) {
     if (x2 == 0) throw new IllegalArgumentException("Division by zero");
+    boolean isNegative = (x1 < 0) != (x2 < 0);
+    int absX1 = x1 < 0 ? negate(x1) : x1;
+    int absX2 = x2 < 0 ? negate(x2) : x2;
     int Cnt = 0;
-    int ret = x1;
-    while (ret >= x2) { 
-        ret = minus(ret, x2);
+    int ret = absX1;
+    while (ret >= absX2) { 
+        ret = minus(ret, absX2);
         Cnt++;
     }
-    return Cnt;
+    return isNegative ? minus(0, Cnt) : Cnt;
 }
 // Returns the integer part of sqrt(x) 
 public static int sqrt(int x) {

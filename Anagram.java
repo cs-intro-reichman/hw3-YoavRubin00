@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /** Functions for checking if a given string is an anagram. */
 public class Anagram {
 	public static void main(String args[]) {
@@ -28,18 +30,26 @@ public class Anagram {
 
 	// Returns true if the two given strings are anagrams, false otherwise.
 	public static boolean isAnagram(String str1, String str2) {
-		if(str1.isEmpty() && str1.isEmpty()){
+		String pStr1 = preProcess(str1);
+        String pStr2 = preProcess(str2);
+		if(pStr1.isEmpty() && pStr2.isEmpty()){
 			return true;
 		}
-		if(str1.length()!=str1.length()){
+		if(pStr1.length()!=pStr2.length()){
 			return false;
 		}
-		String str11 = str1.toLowerCase();
-		String str22 = str2.toLowerCase();
-		for (int i=0; i<str11.length(); i++){
-        if (str22.indexOf(str11.charAt(i)) == -1) {
-				return false;
+		// Count characters in both strings
+		int[] count1 = new int[26];
+		int[] count2 = new int[26];
+		for (int i = 0; i < pStr1.length(); i++) {
+			count1[pStr1.charAt(i) - 'a']++;
+			count2[pStr2.charAt(i) - 'a']++;
 		}
+		// Compare character counts
+		for (int i = 0; i < 26; i++) {
+			if (count1[i] != count2[i]) {
+				return false;
+			}
 		}
 		return true;
 	}
@@ -48,14 +58,24 @@ public class Anagram {
 	// to lower-case, and all the other characters are deleted, except for spaces, which are left
 	// as is. For example, the string "What? No way!" becomes "whatnoway"
 	public static String preProcess(String str) {
-		// Replace the following statement with your code
-		return "";
+        String lowerCaseStr = str.toLowerCase();
+        return lowerCaseStr.replaceAll("[^a-z]", "");
 	} 
 	   
 	// Returns a random anagram of the given string. The random anagram consists of the same
 	// characters as the given string, re-arranged in a random order. 
 	public static String randomAnagram(String str) {
-		// Replace the following statement with your code
-		return "";
+		if(str == null || str.length()<2){
+			return str;
+		}
+		char[] chars = str.toCharArray();
+        Random random = new Random();
+		for(int i = chars.length-1;i>0;i--){
+			int j =random.nextInt(i + 1);
+			char temp = chars[i];
+			chars[i] = chars[j];
+			chars[j] = temp;
+		}
+		return new String(chars);
 	}
 }
