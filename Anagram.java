@@ -30,15 +30,13 @@ public class Anagram {
     }
     
     // Returns a preprocessed version of the given string...
-    public static String preProcess(String str) {
-        String lowerCaseStr = str.toLowerCase();
-        
-        // 1. הסר את כל מה שאינו אות או רווח
-        String cleanedWithSpaces = lowerCaseStr.replaceAll("[^a-z ]", ""); 
-        
-        // 2. הסר את הרווחים הנותרים (כדי לעמוד בדרישת הדוגמה ובדיקות האנגרמות)
-        return cleanedWithSpaces.replaceAll(" ", "");
-    } 
+  public static String preProcess(String str) {
+    String lowerCaseStr = str.toLowerCase();
+    
+    // FIX: Keep the last line to return the string *with* spaces.
+    // The regex [^a-z ] keeps only lowercase letters and spaces, removing punctuation/numbers.
+    return lowerCaseStr.replaceAll("[^a-z ]", ""); 
+}
         
     // Returns a random anagram of the given string.
     public static String randomAnagram(String str) {
